@@ -1,0 +1,208 @@
+<div class="left-ads-display col-lg-8">
+    <div class="row">
+        <div class="desc1-left col-md-5">
+            <p style="text-align: center"><img src="{{ object.poster.url }}" class="img-fluid" alt=""></p>
+        </div>
+        <div class="desc1-right col-md-7 pl-lg-4">
+            <h3 class="editContent" style="outline: none; cursor: inherit;">
+                {{ object.name }}</h3>
+
+            <ul>
+                <li style="list-style: none"><span><b>Год:</b> {{ object.year }}</span></li>
+                <li style="list-style: none"><span><b>Страна:</b> {{ object.country }}</span>
+                </li>
+                <li style="list-style: none"><span><b>Слоган:</b> {{ object.tagline }}</span>
+                </li>
+                <li style="list-style: none">
+                                    <span><b>Режиссер:</b>
+                                        {% for director in object.directors.all %}
+                                            {% if director == object.directors.all.last %}
+                                                {{ director }}
+                                            {% else %}
+                                                {{ director }},
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span></li>
+                <li style="list-style: none"><span><b>Актеры:</b>
+                    {% for actor in object.actors.all %}
+                        {% if actor == object.actors.all.last %}
+                            {{ actor }}
+                        {% else %}
+                            {{ actor }},
+                        {% endif %}
+                    {% endfor %}
+                                </span></li>
+                <li style="list-style: none"><span><b>Жанр:</b>
+                    {% for genre in object.genres.all %}
+                        {% if genre == object.genres.all.last %}
+                            {{ genre }}
+                        {% else %}
+                            {{ genre }},
+                        {% endif %}
+                    {% endfor %}
+                                </span>
+                </li>
+                <li style="list-style: none"><span><b>Премьера в мире:</b> {{ object.world_priemere }}</span>
+                </li>
+                <li style="list-style: none">
+                    <span><b>Бюджет:</b> ${{ object.budget }}</span></li>
+                <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ object.fees_world }}</span>
+                </li>
+                <li style="list-style: none">
+                    <a href="#"><b>Рейтинг:</b>
+                        <span class="fa fa-star" aria-hidden="true"
+                              style="outline: none; cursor: inherit;"></span>
+                        <span class="fa fa-star" aria-hidden="true"
+                              style="outline: none; cursor: inherit;"></span>
+                        <span class="fa fa-star" aria-hidden="true"
+                              style="outline: none; cursor: inherit;"></span>
+                        <span class="fa fa-star" aria-hidden="true"
+                              style="outline: none; cursor: inherit;"></span>
+                        <span class="fa fa-star" aria-hidden="true"
+                              style="outline: none; cursor: inherit;"></span>
+                        <span class="editContent"
+                              style="outline: none; cursor: inherit;">5.0</span>
+                    </a>
+                </li>
+                <div class="share-desc">
+                    <div class="share">
+                        <h4 class="editContent"
+                            style="outline: none; cursor: inherit;">
+                            Share:</h4>
+                        <ul class="w3layouts_social_list list-unstyled">
+                            <li>
+                                <a href="#" class="w3pvt_facebook editContent"
+                                   style="outline: none; cursor: inherit;">
+                                                <span class="fa fa-facebook-f"
+                                                      style="outline: none; cursor: inherit;"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="w3pvt_twitter editContent"
+                                   style="outline: none; cursor: inherit;">
+                                                <span class="fa fa-twitter"
+                                                      style="outline: none; cursor: inherit;"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="w3pvt_dribble editContent"
+                                   style="outline: none; cursor: inherit;">
+                                                <span class="fa fa-dribbble"
+                                                      style="outline: none; cursor: inherit;"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+        </div>
+    </div>
+    <div class="row sub-para-w3layouts mt-5">
+
+        <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">
+            О фильме {{ object.name }}</h3>
+        <p>
+            {% for shot in object.shots.all %}
+                <img src=" {{ shot.shots.url }}" class="img-fluid" alt="" style="width: 200px;">
+            {% endfor %}
+        </p>
+        <p class="editContent" style="outline: none; cursor: inherit;">
+            {{ object.description }}
+        </p>
+        {#                        <p class="mt-3 italic-blue editContent"#}
+        {#                           style="outline: none; cursor: inherit;">#}
+        {#                            <iframe width="560" height="315"#}
+        {#                                    src="https://www.youtube.com/embed/A36LahZNUiE?controls=0"#}
+        {#                                    frameborder="0" allow="accelerometer; autoplay;#}
+        {#                                                                           encrypted-media; gyroscope; picture-in-picture"#}
+        {#                                    allowfullscreen>#}
+        {##}
+        {#                            </iframe>#}
+        {#                        </p>#}
+
+    </div>
+    <hr>
+    <div class="row">
+        <div class="single-form-left">
+            <!-- contact form grid -->
+            <div class="contact-single">
+                <h3 class="editContent" style="outline: none; cursor: inherit;">
+                                    <span class="sub-tittle editContent"
+                                          style="outline: none; cursor: inherit;">02</span>Оставить отзыв</h3>
+
+                <form action="{% url 'add_review' movie.id %}" method="post" class="mt-4" id="formReview">
+                    {% csrf_token %}
+                    <div class="form-group editContent"
+                         style="outline: none; cursor: inherit;">
+                        <input type="hidden" name="parent" id="contactparent" value="">
+                        <label for="contactcomment" class="editContent"
+                               style="outline: none; cursor: inherit;">Ваш комментарий *
+                        </label>
+                        <textarea class="form-control border" rows="5"
+                                  id="contactcomment" required="" name="text"></textarea>
+                    </div>
+                    <div class="d-sm-flex">
+                        <div class="col-sm-6 form-group p-0 editContent"
+                             style="outline: none; cursor: inherit;">
+                            <label for="contactusername" class="editContent"
+                                   style="outline: none; cursor: inherit;">Имя *
+                            </label>
+                            <input type="text" class="form-control border"
+                                   id="contactusername" required="" name="name">
+                        </div>
+                        <div class="col-sm-6 form-group ml-sm-3 editContent"
+                             style="outline: none; cursor: inherit;">
+                            <label for="contactemail" class="editContent"
+                                   style="outline: none; cursor: inherit;">Email *
+                            </label>
+                            <input type="email" class="form-control border"
+                                   id="contactemail" required="" name="email">
+                        </div>
+                    </div>
+                    <button type="submit"
+                            class="mt-3 btn btn-success btn-block py-3"
+                            style="outline: none; cursor: inherit;">Отправить
+                    </button>
+                </form>
+            </div>
+            <!--  //contact form grid ends here -->
+        </div>
+        <div class="media py-5">
+            {% for review in object.get_review %}
+                <img src="/static/bundles/images/te2.jpg" class="mr-3 img-fluid" alt="image"
+                     style="outline: none; cursor: inherit;">
+                <div class="media-body mt-4">
+                <h5 class="mt-0 editContent"
+                    style="outline: none; cursor: inherit;">{{ review.name }}</h5>
+                <p class="mt-2 editContent" style="outline: none; cursor: inherit;">
+                    {{ review.text }}
+                </p>
+                <a href="#formReview" onclick="addReview('{{ review.name }}, ','{{ review.id }}')">Отправить</a>
+                {% for rev in review.reviews_set.all %}
+                    <div class="media mt-5 editContent" style="outline: none; cursor: inherit;">
+                        <a class="pr-3" href="#">
+                            <img src="/static/bundles/images/te1.jpg" class="img-fluid " alt="image"
+                                 style="outline: none; cursor: inherit;">
+                        </a>
+                        <div class="media-body">
+                            <h5 class="mt-0 editContent">{{ rev.name }}</h5>
+                            <p class="mt-2 editContent">{{ rev.text }}</p>
+                            <div><a href="#formReview"
+                                    onclick="addReview('{{ rev.name }}, ','{{ rev.id }}')">Отправить</a></div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addReview(name, parentId) {
+        let $textarea = document.querySelector('#contactcomment');
+        let $contactparent = document.querySelector('#contactparent');
+        $textarea.value = name;
+        $contactparent.value = parentId;
+    }
+</script>

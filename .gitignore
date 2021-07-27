@@ -1,0 +1,8 @@
+*.sqlite3
+.env
+venv
+media/*
+!*media
+*/!*migrations/*
+*/migrations/*
+datadump.json
