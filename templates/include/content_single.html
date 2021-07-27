@@ -167,8 +167,9 @@
             </div>
             <!--  //contact form grid ends here -->
         </div>
+    {% for review in object.get_review %}
         <div class="media py-5">
-            {% for review in object.get_review %}
+
                 <img src="/static/bundles/images/te2.jpg" class="mr-3 img-fluid" alt="image"
                      style="outline: none; cursor: inherit;">
                 <div class="media-body mt-4">
@@ -193,9 +194,9 @@
 
                     </div>
                 {% endfor %}
-            {% endfor %}
             </div>
         </div>
+    {% endfor %}
     </div>
 </div>
 <script>
