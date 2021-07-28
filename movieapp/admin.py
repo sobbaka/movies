@@ -11,7 +11,20 @@ from .models import (
     Rating,
     Reviews
 )
+from django import forms
+# from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
 # Register your models here.
+
+
+class MovieAdminForm(forms.ModelForm):
+    description = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     list_display = ("name", "age", "get_image")
@@ -73,6 +86,7 @@ class MovieAdmin(admin.ModelAdmin):
     inlines = [MovieShotsInline, ReviewInline]
     save_on_top = True
     save_as = True
+    form = MovieAdminForm
     filter_horizontal = ("directors", "actors", 'genres')
     fieldsets = (
         (None, {
