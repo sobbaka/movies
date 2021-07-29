@@ -150,12 +150,13 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'movie', 'parent')
     readonly_fields = ('name', 'email')
 
-
-
+@admin.register(Rating)
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('star', 'movie', 'ip')
+    list_display_links = ('star', 'movie', 'ip')
 
 
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(RatingStar)
-admin.site.register(Rating)
 admin.site.site_title = 'My movie Site'
 admin.site.site_header = 'My movie Site'

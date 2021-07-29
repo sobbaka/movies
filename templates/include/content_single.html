@@ -48,22 +48,24 @@
                     <span><b>Бюджет:</b> ${{ object.budget }}</span></li>
                 <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ object.fees_world }}</span>
                 </li>
+
                 <li style="list-style: none">
-                    <a href="#"><b>Рейтинг:</b>
-                        <span class="fa fa-star" aria-hidden="true"
-                              style="outline: none; cursor: inherit;"></span>
-                        <span class="fa fa-star" aria-hidden="true"
-                              style="outline: none; cursor: inherit;"></span>
-                        <span class="fa fa-star" aria-hidden="true"
-                              style="outline: none; cursor: inherit;"></span>
-                        <span class="fa fa-star" aria-hidden="true"
-                              style="outline: none; cursor: inherit;"></span>
-                        <span class="fa fa-star" aria-hidden="true"
-                              style="outline: none; cursor: inherit;"></span>
-                        <span class="editContent"
-                              style="outline: none; cursor: inherit;">5.0</span>
-                    </a>
+                    <form action="{% url 'add_rating' %}" method="post" name="rating">
+                        <b>Рейтинг:</b>
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ object.id }}" name="movie">
+                         <span class="rating">
+                        {% for k, v in star_form.fields.star.choices %}
+
+                            <input type="radio" id="rating{{ v }}" name="star" value="{{ k }}">
+                            <label for="rating{{ v }}">{{ k }}</label>
+
+                        {% endfor %}
+                            </span>
+                    </form>
+
                 </li>
+
                 <div class="share-desc">
                     <div class="share">
                         <h4 class="editContent"
@@ -197,4 +199,15 @@
         $textarea.value = name;
         $contactparent.value = parentId;
     }
+
+    const rating = document.querySelector('form[name=rating]')
+    rating.addEventListener('change', function (){
+        let data = new FormData(this);
+        fetch(`${this.action}`,{
+            method: 'POST',
+            body: data
+        })
+        .then(response => alert('Рейтинг установлен'))
+        .catch(error => alert('Ошибка'))
+    })
 </script>
