@@ -17,18 +17,18 @@
                                     <span><b>Режиссер:</b>
                                         {% for director in object.directors.all %}
                                             {% if director == object.directors.all.last %}
-                                                {{ director }}
+                                                <a href="{{ director.get_absolute_url }}">{{ director }}</a>
                                             {% else %}
-                                                {{ director }},
+                                                <a href="{{ director.get_absolute_url }}">{{ director }}</a>,
                                             {% endif %}
                                         {% endfor %}
                                     </span></li>
                 <li style="list-style: none"><span><b>Актеры:</b>
                     {% for actor in object.actors.all %}
                         {% if actor == object.actors.all.last %}
-                            {{ actor }}
+                            <a href="{{ actor.get_absolute_url }}">{{ actor }}</a>
                         {% else %}
-                            {{ actor }},
+                            <a href="{{ actor.get_absolute_url }}">{{ actor }}</a>,
                         {% endif %}
                     {% endfor %}
                                 </span></li>
@@ -109,6 +109,7 @@
         <p class="editContent" style="outline: none; cursor: inherit;">
             {{ object.description|safe }}
         </p>
+
 
     </div>
     <hr>

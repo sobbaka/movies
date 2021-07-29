@@ -87,6 +87,7 @@ class MovieAdmin(admin.ModelAdmin):
     save_on_top = True
     save_as = True
     form = MovieAdminForm
+    actions = ['publish', 'unpublish']
     filter_horizontal = ("directors", "actors", 'genres')
     fieldsets = (
         (None, {
@@ -118,6 +119,30 @@ class MovieAdmin(admin.ModelAdmin):
 
     get_image.short_description = "Изображение"
 
+    # my own actions for movie
+    def publish(self, request, queryset):
+        """Опубликовать фильм"""
+        row_update = queryset.update(draft=False)
+        if row_update == '1':
+            message_bit = 'Обновлена 1 запись'
+        else:
+            message_bit = f"Обновлены {row_update} записей"
+        self.message_user(request, f"{message_bit}")
+
+    def unpublish(self, request, queryset):
+        """Снять с публикации"""
+        row_update = queryset.update(draft=True)
+        if row_update == '1':
+            message_bit = 'Обновлена 1 запись'
+        else:
+            message_bit = f"Обновлены {row_update} записей"
+        self.message_user(request, f"{message_bit}")
+
+    publish.short_description = "Опубликовать"
+    publish.allowed_permissions = ('change',)
+
+    unpublish.short_description = "Снять с публикации"
+    unpublish.allowed_permissions = ('change',)
 
 
 @admin.register(Reviews)
@@ -125,9 +150,12 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'movie', 'parent')
     readonly_fields = ('name', 'email')
 
+
+
+
+
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(RatingStar)
 admin.site.register(Rating)
-
 admin.site.site_title = 'My movie Site'
 admin.site.site_header = 'My movie Site'
