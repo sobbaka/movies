@@ -24,9 +24,10 @@ class MovieList(GenreYear, ListView):
     """All movies list"""
     model = Movie
     template_name = 'movies/movie_list.html'
+    paginate_by = 1
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         return context
 
 
@@ -35,8 +36,8 @@ class MovieDetail(GenreYear, DetailView):
     template_name = 'movies/moviesingle.html'
     slug_field = 'url'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         context['star_form'] = RatingForm()
         return context
 
@@ -45,8 +46,8 @@ class ActorDetail(DetailView):
     model = Actor
     template_name = "movies/actor.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         return context
 
 
@@ -65,12 +66,40 @@ class AddReview(View):
 class FilterMovieView(GenreYear, ListView):
     """Фильтр фильмов"""
     template_name = 'movies/movie_list.html'
+    paginate_by = 1
+
     def get_queryset(self):
         queryset = Movie.objects.filter(
             Q(year__in=self.request.GET.getlist("year")) |
             Q(genres__in=self.request.GET.getlist("genre"))
         ).distinct('name')
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['year'] = ''.join([f'year={x}&' for x in self.request.GET.getlist("year")])
+        context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist("genre")])
+        return context
+
+class MovieSearch(ListView):
+    """Поиск фильмов"""
+    model = Movie
+    template_name = 'movies/movie_list.html'
+
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        movie_list = Movie.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
+        return movie_list
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['q'] = f"q={self.request.GET.get('q')}&"
+        return context
+
 
 class AddRating(View):
     """Добавление рейтинга к фильму"""
