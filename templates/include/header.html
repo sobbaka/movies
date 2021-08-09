@@ -1,5 +1,6 @@
 {% load static %}
 {% load movie_tags %}
+{% load i18n movie_tags %}
         <div class="main-banner bg bg1" id="home" style="background-color: rgba(0, 0, 0, 0); margin-top: 0px; background-image: url({% static 'bundles/single-post-pic.jpg' %});">
             <!-- header -->
             <header class="header">
@@ -7,13 +8,13 @@
                     <!-- nav -->
                     <nav class="py-4">
                         <div id="logo">
-                            <h1> <a href="index.html" class="editContent" style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(255, 255, 255); font-size: 40px; background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;, sans-serif;">DjangoMovie</a></h1>
+                            <h1> <a href="/" class="editContent" style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(255, 255, 255); font-size: 40px; background-color: rgba(0, 0, 0, 0); font-family: 'Source Sans Pro', sans-serif;">DjangoMovie</a></h1>
                         </div>
 
                         <label for="drop" class="toggle">Menu</label>
                         <input type="checkbox" id="drop">
                         <ul class="menu mt-2">
-                            <li class="active"><a href="index.html">Главная</a></li>
+                            <li class="active"><a href="/">Главная</a></li>
                             <li>
                                 <!-- First Tier Drop Down -->
                                 <label for="drop-2" class="toggle">Категории <span class="fa fa-angle-down" aria-hidden="true" ></span> </label>
@@ -26,7 +27,39 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            <li><a href="contact.html" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a></li>
+
+                                {% if user.is_authenticated %}
+                                    <li>{{ user.username }}</li>
+                                    <li><a href="{% url 'account_logout' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выход</a></li>
+                                {% else %}
+                                    <li>
+                                        <label for="drop-3" class="toggle">Вход <span class="fa fa-angle-down" aria-hidden="true" ></span> </label>
+                                        <a href="{% url 'account_login' %}">Вход <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+
+                                        <input type="checkbox" id="drop-3">
+                                        <ul>
+                                            <li><a href="{% url 'account_signup' %}" >Регистрация</a></li>
+                                        </ul>
+                                {% endif %}
+                            <li>
+                            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                                <input name="next" type="hidden" value="{{ redirect_to }}">
+                                <select name="language">
+                                    {% get_current_language as LANGUAGE_CODE %}
+                                    {% get_available_languages as LANGUAGES %}
+                                    {% get_language_info_list for LANGUAGES as languages %}
+                                    {% for language in languages %}
+                                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                                                selected{% endif %}>
+                                            {{ language.name_local }} ({{ language.code }})
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <input type="submit" value="Go">
+                            </form>
+                            </li>
+
+
                         </ul>
                     </nav>
                     <!-- //nav -->

@@ -6,3 +6,4 @@ media/*
 */!*migrations/*
 */migrations/*
 datadump.json
+notes.txt

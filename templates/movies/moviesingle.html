@@ -1,5 +1,10 @@
 {% extends 'movies/base.html' %}
 {% load static %}
+{% load recaptcha3 %}
+{% block extrahead %}
+    {% recaptcha_init %}
+    {% recaptcha_ready action_name="homepage" %}
+{% endblock %}
 
 {% block content %}
     {% include 'include/left_sidebar.html' %}

@@ -1,3 +1,4 @@
+{% load static i18n %}
 <div class="left-ads-display col-lg-8">
     <div class="row">
         <div class="desc1-left col-md-5">
@@ -8,13 +9,13 @@
                 {{ object.name }}</h3>
 
             <ul>
-                <li style="list-style: none"><span><b>Год:</b> {{ object.year }}</span></li>
-                <li style="list-style: none"><span><b>Страна:</b> {{ object.country }}</span>
+                <li style="list-style: none"><span><b>{% trans 'Год' %}:</b> {{ object.year }}</span></li>
+                <li style="list-style: none"><span><b>{% trans 'Страна' %}:</b> {{ object.country }}</span>
                 </li>
-                <li style="list-style: none"><span><b>Слоган:</b> {{ object.tagline }}</span>
+                <li style="list-style: none"><span><b>{% trans 'Слоган' %}:</b> {{ object.tagline }}</span>
                 </li>
                 <li style="list-style: none">
-                                    <span><b>Режиссер:</b>
+                                    <span><b>{% trans 'Режиссер' %}:</b>
                                         {% for director in object.directors.all %}
                                             {% if director == object.directors.all.last %}
                                                 <a href="{{ director.get_absolute_url }}">{{ director }}</a>
@@ -23,7 +24,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </span></li>
-                <li style="list-style: none"><span><b>Актеры:</b>
+                <li style="list-style: none"><span><b>{% trans 'Актеры' %}:</b>
                     {% for actor in object.actors.all %}
                         {% if actor == object.actors.all.last %}
                             <a href="{{ actor.get_absolute_url }}">{{ actor }}</a>
@@ -32,7 +33,7 @@
                         {% endif %}
                     {% endfor %}
                                 </span></li>
-                <li style="list-style: none"><span><b>Жанр:</b>
+                <li style="list-style: none"><span><b>{% trans 'Жанр' %}:</b>
                     {% for genre in object.genres.all %}
                         {% if genre == object.genres.all.last %}
                             {{ genre }}
@@ -128,11 +129,13 @@
                     <div class="form-group editContent"
                          style="outline: none; cursor: inherit;">
                         <input type="hidden" name="parent" id="contactparent" value="">
+                        <input type="hidden" name="path" id="path" value="" >
                         <label for="contactcomment" class="editContent"
                                style="outline: none; cursor: inherit;">Ваш комментарий *
                         </label>
-                        <textarea class="form-control border" rows="5"
-                                  id="contactcomment" required="" name="text"></textarea>
+{#                        <textarea class="form-control border" rows="5"#}
+{#                                  id="contactcomment" required="" name="text"></textarea>#}
+                        {{ form.text }}
                     </div>
                     <div class="d-sm-flex">
                         <div class="col-sm-6 form-group p-0 editContent"
@@ -140,21 +143,24 @@
                             <label for="contactusername" class="editContent"
                                    style="outline: none; cursor: inherit;">Имя *
                             </label>
-                            <input type="text" class="form-control border"
-                                   id="contactusername" required="" name="name">
+{#                            <input type="text" class="form-control border"#}
+{#                                   id="contactusername" required="" name="name">#}
+                            {{ form.name }}
                         </div>
                         <div class="col-sm-6 form-group ml-sm-3 editContent"
                              style="outline: none; cursor: inherit;">
                             <label for="contactemail" class="editContent"
                                    style="outline: none; cursor: inherit;">Email *
                             </label>
-                            <input type="email" class="form-control border"
-                                   id="contactemail" required="" name="email">
+{#                            <input type="email" class="form-control border"#}
+{#                                   id="contactemail" required="" name="email">#}
+                            {{ form.email }}
                         </div>
+                        {{ form.captcha }}
                     </div>
                     <button type="submit"
                             class="mt-3 btn btn-success btn-block py-3"
-                            style="outline: none; cursor: inherit;">Отправить
+                            style="outline: none; cursor: inherit;" onclick="addUrl()">Отправить
                     </button>
                 </form>
             </div>
@@ -193,6 +199,12 @@
     </div>
 </div>
 <script>
+    {#function addUrl(){#}
+    {#    let $path = document.querySelector('#path');#}
+    {#    let url = document.URL;#}
+    {#    $path.value = url;#}
+
+
     function addReview(name, parentId) {
         let $textarea = document.querySelector('#contactcomment');
         let $contactparent = document.querySelector('#contactparent');

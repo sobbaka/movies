@@ -14,19 +14,20 @@ from .models import (
 from django import forms
 # from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-
+from modeltranslation.admin import TranslationAdmin
 # Register your models here.
 
 
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    description_ru = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    description_en = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
     class Meta:
         model = Movie
         fields = '__all__'
 
 
 @admin.register(Actor)
-class ActorAdmin(admin.ModelAdmin):
+class ActorAdmin(TranslationAdmin):
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image", )
 
@@ -36,7 +37,7 @@ class ActorAdmin(admin.ModelAdmin):
     get_image.short_description = "Изображение"
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(admin.ModelAdmin):
+class MovieShotsAdmin(TranslationAdmin):
     list_display = ("id", "movie", "get_image")
     readonly_fields = ("get_image",)
 
@@ -76,7 +77,7 @@ class MovieShotsInline(admin.TabularInline):
     get_image.short_description = "Изображение"
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'category', 'url', 'draft')
     list_display_links = ('id', 'name')
     list_filter = ('category', 'year', 'genres')

@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 from django.views.generic import DetailView, ListView
@@ -16,7 +16,7 @@ class GenreYear:
         return Genre.objects.all()
 
     def get_years(self):
-        return Movie.objects.filter(draft=True).values_list('year', flat=True).distinct('year')
+        return Movie.objects.filter(draft=False).values_list('year', flat=True).distinct('year')
 
 
 
@@ -24,7 +24,7 @@ class MovieList(GenreYear, ListView):
     """All movies list"""
     model = Movie
     template_name = 'movies/movie_list.html'
-    paginate_by = 1
+    paginate_by = 3
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -39,6 +39,7 @@ class MovieDetail(GenreYear, DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['star_form'] = RatingForm()
+        context['form'] = ReviewForm()
         return context
 
 
@@ -61,12 +62,14 @@ class AddReview(View):
             form = form.save(commit=False)  # stop saving form
             form.movie = movie
             form.save()
-        return redirect("/movies/")
+        return redirect(request.POST.get('path'))
+        # return HttpResponseRedirect(self.request.path_info)
+
 
 class FilterMovieView(GenreYear, ListView):
     """Фильтр фильмов"""
     template_name = 'movies/movie_list.html'
-    paginate_by = 1
+    paginate_by = 3
 
     def get_queryset(self):
         queryset = Movie.objects.filter(
@@ -81,11 +84,11 @@ class FilterMovieView(GenreYear, ListView):
         context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist("genre")])
         return context
 
+
 class MovieSearch(ListView):
     """Поиск фильмов"""
     model = Movie
     template_name = 'movies/movie_list.html'
-
 
     def get_queryset(self):
         query = self.request.GET.get('q')
