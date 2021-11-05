@@ -11,6 +11,7 @@ class ContactView(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
+
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.POST.get('path'))

@@ -34,7 +34,7 @@ class MovieList(GenreYear, ListView):
 class MovieDetail(GenreYear, DetailView):
     model = Movie
     template_name = 'movies/moviesingle.html'
-    slug_field = 'url'
+    slug_field = 'id'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
