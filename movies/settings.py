@@ -104,17 +104,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'movies.wsgi.application'
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('NAME'),
-        'USER': os.environ.get('DBUSER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DATABASE_NAME'),
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '3306',
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
     }
 }
+
+
+
+
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

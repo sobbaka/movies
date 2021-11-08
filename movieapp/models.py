@@ -89,7 +89,7 @@ class MovieShots(models.Model):
     title = models.CharField("Заголовок", max_length=100)
     description = models.TextField(verbose_name="Описание", blank=True)
     shots = models.ImageField("Изображение", upload_to="movie_shots/")
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name="фильм", related_name="shots", default=0)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name="фильм", related_name="shots", default=1)
 
 
     def __str__(self):

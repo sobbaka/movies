@@ -21,10 +21,12 @@
                                 <a href="#">Категории <span class="fa fa-angle-down" aria-hidden="true"></span></a>
                                 <input type="checkbox" id="drop-2">
                                 <ul>
-                                    {% get_categories as categories %}
-                                    {% for category in categories %}
-                                    <li><a href="moviesingle.html">{{ category.name }}</a></li>
-                                    {% endfor %}
+{#                                    {% get_categories as categories %}#}
+{#                                {% if categories %}#}
+{#                                    {% for category in categories %}#}
+{#                                    <li><a href="moviesingle.html">{{ category.name }}</a></li>#}
+{#                                    {% endfor %}#}
+{#                                {% endif %}#}
                                 </ul>
                             </li>
 
